@@ -30,6 +30,8 @@ public class Book {
     // Allons au plus simple : Le book a un champ price.
     private Double price;
 
+    private Integer stock = 0;
+
     @Version
     private Long version;
 
@@ -74,6 +76,14 @@ public class Book {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public Long getVersion() {

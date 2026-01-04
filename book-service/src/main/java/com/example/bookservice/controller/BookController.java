@@ -43,7 +43,20 @@ public class BookController {
                 book.setPrice(10.0); // Default local
             }
         }
+        if (book.getStock() == null) {
+            book.setStock(100); // Default stock
+        }
         return bookService.save(book);
+    }
+
+    @PostMapping("/{id}/purchase")
+    public ResponseEntity<String> purchaseBook(@PathVariable Long id) {
+        try {
+            bookService.purchaseBook(id);
+            return ResponseEntity.ok("Purchase successful");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")

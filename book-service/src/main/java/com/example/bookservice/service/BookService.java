@@ -72,12 +72,24 @@ public class BookService {
         return null;
     }
 
+    public void purchaseBook(Long bookId) {
+        Book book = bookRepository.findWithLockingById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        if (book.getStock() > 0) {
+            book.setStock(book.getStock() - 1);
+            bookRepository.save(book);
+        } else {
+            throw new RuntimeException("Stock épuisé !");
+        }
+    }
+
     public Double fallbackPrice(Long bookId, Throwable t) {
         // Fallback en cas d'erreur
-        // Retourne une valeur par défaut, ex: -1.0 pour signaler une indispo ou un prix
-        // standard
-        System.err.println("Fallback pricing service called for book " + bookId + " due to: " + t.getMessage());
-        return -1.0;
+        // Retourne une valeur par défaut, ex: 0.0 pour signaler une indispo
+        // System.err.println("Fallback pricing service called for book " + bookId + "
+        // due to: " + t.getMessage());
+        return 0.0;
     }
 
     public void deleteById(Long id) {
